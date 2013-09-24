@@ -53,6 +53,10 @@ namespace soth
     Bound& operator= ( const std::pair<double,double> & val);
     SOTH_EXPORT friend std::ostream& operator<< (std::ostream& os, const Bound& );
 
+    //get values
+    const double getValInf() const { return valInf; }
+    const double getValSup() const { return valSup; }
+
   }; // Class Bound
 
   typedef Eigen::Matrix<Bound, Eigen::Dynamic,1> VectorBound;

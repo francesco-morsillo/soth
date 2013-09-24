@@ -100,7 +100,7 @@ namespace soth
   protected:
     HCOD( void ) : Y(0) {};
 
-  protected:public://DEBUG
+  public://DEBUG
     unsigned int sizeProblem;
     soth::BaseY Y;
     stage_sequence_t stages;
