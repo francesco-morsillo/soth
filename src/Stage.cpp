@@ -761,6 +761,10 @@ namespace soth
     sotDEBUG(5) << "W = " << MATLAB(W,isWIdenty) << endl;
     sotDEBUG(5) << "M = " << (MATLAB)M << endl;
     sotDEBUG(5) << "L = " << (MATLAB)L << endl;
+
+    std::cout  << "W = " << MATLAB(W,isWIdenty) << endl;
+    std::cout  << "M = " << (MATLAB)M << endl;
+    std::cout  << "L = " << (MATLAB)L << endl;
     return rankJ;
   }
 
@@ -1336,7 +1340,8 @@ namespace soth
             assert( (btype1==Bound::BOUND_INF)||(btype1==Bound::BOUND_SUP) );
             sotDEBUG(5) << "Violation at " <<name <<" "
                         << ((btype1==Bound::BOUND_INF)?"-":"+")<<i << std::endl;
-
+	    std::cout << "Violation at " <<name <<" "
+		      << ((btype1==Bound::BOUND_INF)?"-":"+")<<i << std::endl;
             //Bound::bound_t btype0 = b.check(val0,EPSILON);
             Bound::bound_t btype0 = b.check(val0);
             if( btype0==Bound::BOUND_NONE )

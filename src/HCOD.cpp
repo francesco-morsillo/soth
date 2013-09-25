@@ -5,7 +5,8 @@
 #include "soth/HCOD.hpp"
 #include <boost/foreach.hpp>
 #include <sys/time.h>
-#include <fstream>
+//#include <fstream>
+#include <sstream>
 
 namespace soth
 {
@@ -358,7 +359,10 @@ namespace soth
       {
 	sotDEBUG(5) << "Check stage " << (*iter)->name << "." << std::endl;
 	if(! (*iter)->checkBound( solution,uNext,cst,tau ) )
-	  stageUp=iter;
+	  {
+	    std::cout << "Pb with stage " << (*iter)->name << "." << std::endl;
+	    stageUp=iter;
+	  }
       }
     if( tau<1 )
       {
@@ -475,6 +479,9 @@ namespace soth
 
     */
 
+
+  std::ofstream fout("/tmp/hcod_trace.dat");
+
   void HCOD::activeSearch( VectorXd & u )
   {
     // if( isDebugOnce ) {  sotDebugTrace::openFile();  isDebugOnce = false; }
@@ -515,6 +522,7 @@ namespace soth
     unsigned int stageMinimal = 0;
     do
       {
+	//fout << "\n\nBegin do: " << iter << std::endl;
 	iter ++; sotDEBUG(5) << " --- *** \t" << iter << "\t***.---" << std::endl;
 	//if( iter>1 ) { break; }
 
@@ -525,6 +533,7 @@ namespace soth
 	assert( testSolution(&std::cerr) );
 
 	double tau = computeStepAndUpdate();
+	//fout << "tau: " << tau << std::endl;
 	if( tau<1 )
 	  {
 	    sotDEBUG(5) << "Update done, make step <1." << std::endl;
@@ -537,6 +546,7 @@ namespace soth
 
 	    for( ;stageMinimal<=stages.size();++stageMinimal )
 	      {
+		//fout << "Begin for-stageMinimal" << stageMinimal << std::endl;
 		sotDEBUG(5) << "--- Started to examinate stage " << stageMinimal << std::endl;
 		computeLagrangeMultipliers(stageMinimal);
 		if( sotDEBUG_ENABLE(15) )  show( sotDEBUGFLOW );
@@ -555,9 +565,13 @@ namespace soth
 
 	      }
 	  }
-
-	if( iter>1000 ) throw 666;
+	//fout << "Before if-iter: " << iter << std::endl;
+	if (iter==1000)
+	  fout << "On the verge of throwing an exception " << std::endl;
+	if( iter>1000 ) 
+	  throw 666;
     } while(stageMinimal<=nbStages());
+    std::cout << "iter: " << iter << std::endl;
     sotDEBUG(5) << "Lagrange>=0, no downdate, active search completed." << std::endl;
     /*gettimeofday(&t2,NULL);
     time2 = ((t2.tv_sec-t1.tv_sec)+(t2.tv_usec-t1.tv_usec)/1.0e6);
